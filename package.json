@@ -1,0 +1,14 @@
+{
+    "name": "macsauced",
+    "dependencies": {
+        "electron": "^1.6.8"
+    },
+    "scripts": {
+        "start": "electron ."
+    },
+    "main": "main.js",
+    "version": "0.0.0",
+    "license": "MIT",
+    "description": "",
+    "author": "gkweb"
+}
