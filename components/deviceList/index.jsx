@@ -11,13 +11,11 @@ const styles = StyleSheet.create({
 })
 
 // Network device
-const nDevice = (device, index) => (
-  <div key={index}>{device.name}<button>Use</button></div>
-)
+const nDevice = (device, index) => (<div key={index}>{device}<button>Use</button></div>)
 
 class DeviceList extends Component {
   getDevices() {
-    if (this.props.devices) return this.props.devices.map((device, index) => (nDevice(device, index)))
+    if (this.props.devices) return Object.keys(this.props.devices).map((device, index) => (nDevice(device, index)))
   }
   render () {
     return (

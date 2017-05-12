@@ -1,12 +1,74 @@
 import React, {Component} from 'react'
 import { StyleSheet, css } from 'aphrodite/no-important'
 import DeviceList from './../deviceList/'
+import {store} from './../../client.js'
+import {
+  DEVICES_ADD
+} from './../../utils/actionTypes.js'
+
+// Devices structure
+// 'en0': {
+//   name: 'en0',
+//   enabled: true,
+//   mac: {
+//     previous: '22:33:44:55:66:77'
+//   }
+// },
+
+const devicesAdd = (devices) => ({
+  type: DEVICES_ADD,
+  devices
+})
 
 class Settings extends Component {
+  componentWillMount() {
+    let rawDevices = null
+    console.debug(si)
+    if (si) rawDevices = si.networkInterfaces().then(devices => {
+      // console.debug(devices)
+      let newDevices = {}
+      let existingDevices = Object.assign({}, this.props.state.devices)
+      let unUsedDevices = {}
+
+      for (let i=0;i < devices.length; i++) {
+        if (!devices[i].internal && !existingDevices[devices[i].iface]) {
+          newDevices[devices[i].iface] = {
+            name: devices[i].iface,
+            enabled: true,
+            mac: {
+              previous: null
+            }
+          }
+        } else if(existingDevices[devices[i].iface]) {
+          // device exists in state already so do not overwrite
+          newDevices[devices[i].iface] = {
+            name: devices[i].iface,
+            enabled: true,
+            mac: {
+              previous: existingDevices[devices[i].iface].mac.previous
+            }
+          }
+        }
+      }
+
+      unUsedDevices = {}
+      unUsedDevices = Object.keys(existingDevices).reduce((accumulated, currentKey, index) => {
+        if (!newDevices[currentKey]) {
+          accumulated[currentKey] = {
+            ...existingDevices[currentKey],
+            enabled: false
+          }
+          return accumulated
+        }
+      }, {})
+      store.dispatch(devicesAdd({...newDevices, ...unUsedDevices}))
+    })
+
+  }
   render () {
     return (
       <div className={css(styles.seedContainer)}>
-        <DeviceList devices={this.props.devices}/>
+        <DeviceList devices={this.props.state.devices}/>
       </div>
     )
   }
