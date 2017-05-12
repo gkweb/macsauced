@@ -4,6 +4,23 @@ import Settings from './../settings/'
 import TopNavBar from './../topNavBar/'
 import Home from './../home/'
 
+const pages = {
+  'Settings': Settings,
+  'Home': Home
+}
+
+class App extends Component {
+  render () {
+    const CurrentPage = pages[this.props.state.settings.currentPage]
+    return (
+      <div className={css(styles.seedContainer)}>
+        <TopNavBar {...this.props}/>
+        <CurrentPage {...this.props}/>
+      </div>
+    )
+  }
+}
+
 const styles = StyleSheet.create({
   seedContainer: {},
   settingsBtn: {
@@ -64,22 +81,8 @@ const styles = StyleSheet.create({
     },
     ':hover': {
       backgroundColor: '#8c194f'
-    },
-
+    }
   }
 })
-
-const currentPage = 'settingsPage'
-
-class App extends Component {
-  render () {
-    return (
-      <div className={css(styles.seedContainer)}>
-        <TopNavBar />
-        <Settings devices={this.props.devices}/>
-      </div>
-    )
-  }
-}
 
 export default App

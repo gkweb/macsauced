@@ -2,6 +2,16 @@ import React, {Component} from 'react'
 import { StyleSheet, css } from 'aphrodite/no-important'
 import DeviceList from './../deviceList/'
 
+class Settings extends Component {
+  render () {
+    return (
+      <div className={css(styles.seedContainer)}>
+        <DeviceList devices={this.props.devices}/>
+      </div>
+    )
+  }
+}
+
 const styles = StyleSheet.create({
   seedContainer: {},
   mainTitle: {
@@ -32,15 +42,5 @@ const styles = StyleSheet.create({
 
   }
 })
-
-class Settings extends Component {
-  render () {
-    return (
-      <div className={css(styles.seedContainer)}>
-        <DeviceList devices={this.props.devices}/>
-      </div>
-    )
-  }
-}
 
 export default Settings

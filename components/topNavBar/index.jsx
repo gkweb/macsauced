@@ -1,5 +1,34 @@
 import React, {Component} from 'react'
 import { StyleSheet, css } from 'aphrodite/no-important'
+import {store} from './../../client.js'
+import { SETTINGS_CHANGE_PAGE } from './../../utils/actionTypes.js'
+
+class TopNavBar extends Component {
+  setPage (page) {
+    if (!page) return
+    return ({
+      type: SETTINGS_CHANGE_PAGE,
+      page
+    })
+  }
+  getBtn (currentPage) {
+    if (!currentPage) return null
+    const pageName = (currentPage === 'Settings') ? 'Home' : 'Settings'
+    return (
+      <div className={css(styles.topBarCell)}>
+        <button className={css(styles.settingsBtn)} onClick={() => store.dispatch(this.setPage(pageName))}>{pageName}</button>
+      </div>
+    )
+  }
+  render () {
+    return (
+      <div className={css(styles.topBar)}>
+        <div className={css(styles.topBarCell)}>Device: <span className={css(styles.deviceName)}>en0</span></div>
+        {this.getBtn(this.props.state.settings.currentPage)}
+      </div>
+    )
+  }
+}
 
 const styles = StyleSheet.create({
   settingsBtn: {
@@ -35,16 +64,5 @@ const styles = StyleSheet.create({
     marginLeft: '.5em'
   }
 })
-
-class TopNavBar extends Component {
-  render () {
-    return (
-      <div className={css(styles.topBar)}>
-        <div className={css(styles.topBarCell)}>Device: <span className={css(styles.deviceName)}>en0</span></div>
-        <div className={css(styles.topBarCell)}><button className={css(styles.settingsBtn)}>Settings</button></div>
-      </div>
-    )
-  }
-}
 
 export default TopNavBar
