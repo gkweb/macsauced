@@ -11,26 +11,27 @@ const updateNotification = (notification) => ({
 
 class Home extends Component {
   generate() {
-    console.log('GENERATE!@#!@#!@#')
-
     const options = {
       name: 'MacSauced',
       // icns: '/Applications/Electron.app/Contents/Resources/Electron.icns', // (optional)
     }
-    console.log(`openssl rand -hex 6 | sed 's/\\(..\\)/\\1:/g;s/.$//' | xargs sudo ifconfig ${this.props.state.settings.selectedDevice} ether`)
     sudo.exec(`openssl rand -hex 6 | sed 's/\\(..\\)/\\1:/g;s/.$//' | xargs sudo ifconfig ${this.props.state.settings.selectedDevice} ether`, options, function(error, stdout, stderr) {
-      console.debug(error)
-      console.debug(stderr)
-      console.debug(stdout)
-    if (stderr) {
-      console.debug(stderr)
-      store.dispatch(updateNotification({type: 'error', text: stderr}))
-    } else {
-      store.dispatch(updateNotification({type: 'success', text: 'Succesfully Added'}))
-    }
+      const message = {
+        type: 'success',
+        text: 'Succesfully Added'
+      }
+      if(error) {
+        message.text = error
+        message.type = 'error'
+      } else if (stderr) {
+        message.text = stderr
+        message.type = 'error'
+      } else if (stdout) {
+        message.text = stdout
+        message.type = 'error'
+      }
+      store.dispatch(updateNotification(message))
     })
-
-
   }
   render () {
     return (
