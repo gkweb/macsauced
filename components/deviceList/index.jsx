@@ -1,17 +1,18 @@
 import React, {Component} from 'react'
 import { StyleSheet, css } from 'aphrodite/no-important'
+import {store} from './../../client.js'
+import {
+  SETTINGS_CHANGE_SELECTED_DEVICE
+} from './../../utils/actionTypes.js'
 
-const styles = StyleSheet.create({
-  seedContainer: {
-    backgroundColor: 'black',
-    color: 'white',
-    height: '100%',
-    width: '100%'
-  }
+
+const changeSelectedDevice = (device) => ({
+  type: SETTINGS_CHANGE_SELECTED_DEVICE,
+  device
 })
 
 // Network device
-const nDevice = (device, index) => (<div key={index}>{device}<button>Use</button></div>)
+const nDevice = (device, index) => (<div key={index}>{device}<button onClick={() => {store.dispatch(changeSelectedDevice(device))}}>Use</button></div>)
 
 class DeviceList extends Component {
   getDevices() {

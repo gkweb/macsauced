@@ -6,15 +6,6 @@ import {
   DEVICES_ADD
 } from './../../utils/actionTypes.js'
 
-// Devices structure
-// 'en0': {
-//   name: 'en0',
-//   enabled: true,
-//   mac: {
-//     previous: '22:33:44:55:66:77'
-//   }
-// },
-
 const devicesAdd = (devices) => ({
   type: DEVICES_ADD,
   devices
@@ -23,8 +14,9 @@ const devicesAdd = (devices) => ({
 class Settings extends Component {
   componentWillMount() {
     let rawDevices = null
-    console.debug(si)
     if (si) rawDevices = si.networkInterfaces().then(devices => {
+
+      console.log(devices)
       // console.debug(devices)
       let newDevices = {}
       let existingDevices = Object.assign({}, this.props.state.devices)

@@ -1,7 +1,22 @@
-const {app, BrowserWindow} = require('electron')
+const {app, BrowserWindow, Tray} = require('electron')
 const path = require('path')
 const url = require('url')
 const si = require('systeminformation')
+var sudo = require('sudo-prompt')
+
+// Generate new mac address here
+
+function generateMac (device) {
+  var options = {
+    name: 'MacSauced',
+    // icns: '/Applications/Electron.app/Contents/Resources/Electron.icns', // (optional)
+  }
+  sudo.exec('echo hello' + device, options, function(error, stdout, stderr) {
+    if (error) console.log(error)
+
+    console.log('Success???')
+  })
+}
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -11,14 +26,50 @@ function createWindow () {
   // Create the browser window.
   win = new BrowserWindow({
     width: 300,
-    height: 400,
+    height: 300,
     darkTheme: true,
-    backgroundColor: '#000',
+    transparent: true,
     alwaysOnTop: true,
     skipTaskbar: true,
-    // frame: false,
+    show: false,
+    frame: false,
+    icon: path.join(__dirname, '/components/app/icon64x64.png'),
     type: 'textured'
   })
+
+  const tray = new Tray(path.join(__dirname, '/components/app/icon16x16bw.png'))
+
+  tray.on('click', () => {
+    toggleWindow()
+  })
+
+  const toggleWindow = () => {
+    if (win.isVisible()) {
+      win.hide()
+    } else {
+      showWindow()
+    }
+  }
+
+  const showWindow = () => {
+    const position = getWindowPosition()
+    win.setPosition(position.x, position.y, false)
+    win.show()
+    win.focus()
+  }
+  // https://github.com/kevinsawicki/tray-example/blob/master/main.js
+  const getWindowPosition = () => {
+    const windowBounds = win.getBounds()
+    const trayBounds = tray.getBounds()
+
+    // Center window horizontally below the tray icon
+    const x = Math.round(trayBounds.x + (trayBounds.width / 2) - (windowBounds.width / 2))
+
+    // Position window 4 pixels vertically below the tray icon
+    const y = Math.round(trayBounds.y + trayBounds.height + 4)
+
+    return {x: x, y: y}
+  }
 
   // and load the index.html of the app.
   win.loadURL(url.format({
@@ -39,10 +90,14 @@ function createWindow () {
   })
 }
 
+// Don't show the app in the doc
+app.dock.hide()
+
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', createWindow)
+
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {

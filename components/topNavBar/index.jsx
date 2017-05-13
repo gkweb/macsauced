@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import { StyleSheet, css } from 'aphrodite/no-important'
 import {store} from './../../client.js'
+import NotifyBar from './../notifyBar/'
 import { SETTINGS_CHANGE_PAGE } from './../../utils/actionTypes.js'
 
 class TopNavBar extends Component {
@@ -22,9 +23,12 @@ class TopNavBar extends Component {
   }
   render () {
     return (
-      <div className={css(styles.topBar)}>
-        <div className={css(styles.topBarCell)}>Device: <span className={css(styles.deviceName)}>en0</span></div>
-        {this.getBtn(this.props.state.settings.currentPage)}
+      <div>
+        <NotifyBar message={this.props.state.notify}/>
+        <div className={css(styles.topBar)}>
+          <div className={css(styles.topBarCell)}>Device: <span className={css(styles.deviceName)}>{this.props.state.settings.selectedDevice}</span></div>
+          {this.getBtn(this.props.state.settings.currentPage)}
+        </div>
       </div>
     )
   }

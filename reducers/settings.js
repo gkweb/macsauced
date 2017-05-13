@@ -1,6 +1,7 @@
 import {
   SETTINGS_CHANGE_PAGE,
-  SETTINGS_SET_LOADING
+  SETTINGS_SET_LOADING,
+  SETTINGS_CHANGE_SELECTED_DEVICE
 } from './../utils/actionTypes.js'
 
 export const settingsInit = {
@@ -13,6 +14,10 @@ const settingsReducer = (state = settingsInit, action) => {
   switch (action.type) {
   case SETTINGS_CHANGE_PAGE: {
     state = {...state, currentPage: action.page}
+    break
+  }
+  case SETTINGS_CHANGE_SELECTED_DEVICE: {
+    state = {...state, selectedDevice: action.device}
     break
   }
   case SETTINGS_SET_LOADING: {
