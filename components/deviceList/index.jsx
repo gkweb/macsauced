@@ -1,10 +1,14 @@
 import React, {Component} from 'react'
-import { StyleSheet, css } from 'aphrodite/no-important'
-import {store} from './../../client.js'
+import {
+  StyleSheet,
+  css
+} from 'aphrodite/no-important'
+import {
+  store
+} from './../../client.js'
 import {
   SETTINGS_CHANGE_SELECTED_DEVICE
 } from './../../utils/actionTypes.js'
-
 
 const changeSelectedDevice = (device) => ({
   type: SETTINGS_CHANGE_SELECTED_DEVICE,
@@ -12,7 +16,11 @@ const changeSelectedDevice = (device) => ({
 })
 
 // Network device
-const nDevice = (device, index) => (<div key={index}>{device}<button onClick={() => {store.dispatch(changeSelectedDevice(device))}}>Use</button></div>)
+const nDevice = (device, index) => (
+  <div key={index}>{device}
+  <button onClick={() => {store.dispatch(changeSelectedDevice(device))}}>Use</button>
+  </div>
+)
 
 class DeviceList extends Component {
   getDevices() {

@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import { StyleSheet, css } from 'aphrodite/no-important'
 import Settings from './../settings/'
 import TopNavBar from './../topNavBar/'
+import NotifyBar from './../notifyBar/'
 import Home from './../home/'
 
 const pages = {
@@ -19,6 +20,7 @@ class App extends Component {
     return (
       <div className={css(styles.mainWindow)}>
         <TopPointer />
+        <NotifyBar message={this.props.state.notify}/>
         <div className={css(styles.seedContainer)}>
           <div>
             <TopNavBar {...this.props}/>

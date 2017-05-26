@@ -15,9 +15,6 @@ class Settings extends Component {
   componentWillMount() {
     let rawDevices = null
     if (si) rawDevices = si.networkInterfaces().then(devices => {
-
-      console.log(devices)
-      // console.debug(devices)
       let newDevices = {}
       let existingDevices = Object.assign({}, this.props.state.devices)
       let unUsedDevices = {}

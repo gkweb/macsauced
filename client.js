@@ -6,6 +6,7 @@ import {
   compose,
   applyMiddleware
 } from 'redux'
+import thunk from 'redux-thunk'
 import {StyleSheet, css} from 'aphrodite/no-important'
 
 import App from './components/app'
@@ -15,7 +16,7 @@ import settingsReducer, {settingsInit} from './reducers/settings.js'
 import notifyReducer, {notifyInit} from './reducers/notify.js'
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
-const middleware = []
+const middleware = [thunk]
 
 const reduced = combineReducers({
   devices: devicesReducer,

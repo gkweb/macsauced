@@ -2,14 +2,15 @@ import React, {Component} from 'react'
 import { StyleSheet, css } from 'aphrodite/no-important'
 import DeviceList from './../deviceList/'
 import {store} from './../../client.js'
-import {UPDATE_NOTIFCATION} from './../../utils/actionTypes.js'
-
-const updateNotification = (notification) => ({
-  type: UPDATE_NOTIFCATION,
-  notification
-})
+import {
+  updateNotification,
+  getDeviceMacAddress
+} from './actions.js'
 
 class Home extends Component {
+  componentWillMount() {
+    store.dispatch(getDeviceMacAddress(this.props.state.settings.selectedDevice))
+  }
   generate() {
     const options = {
       name: 'MacSauced',
@@ -18,10 +19,10 @@ class Home extends Component {
     sudo.exec(`openssl rand -hex 6 | sed 's/\\(..\\)/\\1:/g;s/.$//' | xargs sudo ifconfig ${this.props.state.settings.selectedDevice} ether`, options, function(error, stdout, stderr) {
       const message = {
         type: 'success',
-        text: 'Succesfully Added'
+        text: 'Succesfully Changed, Please restart your network device if any issues.'
       }
       if(error) {
-        message.text = error
+        message.text = 'Error attempting to change MAC'
         message.type = 'error'
       } else if (stderr) {
         message.text = stderr
@@ -37,7 +38,7 @@ class Home extends Component {
     return (
       <div className={css(styles.homeContainer)}>
       <p className={css(styles.mainTitleDesc)}>MAC Address:</p>
-      <h1 className={css(styles.mainTitle)}>02:0E:22:FF:AF:13</h1>
+      <h1 className={css(styles.mainTitle)}>{this.props.state.settings.currentDeviceMacAddress}</h1>
       <button className={css(styles.mainButton)} onClick={() => this.generate() }>Generate New</button>
       </div>
     )

@@ -24,7 +24,6 @@ class TopNavBar extends Component {
   render () {
     return (
       <div>
-        <NotifyBar message={this.props.state.notify}/>
         <div className={css(styles.topBar)}>
           <div className={css(styles.topBarCell)}>Device: <span className={css(styles.deviceName)}>{this.props.state.settings.selectedDevice}</span></div>
           {this.getBtn(this.props.state.settings.currentPage)}
